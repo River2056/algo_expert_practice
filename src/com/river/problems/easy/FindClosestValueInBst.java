@@ -1,34 +1,27 @@
 package com.river.problems.easy;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class FindClosestValueInBst {
 
     public static int findClosestValueInBst(BST tree, int target) {
-        Map<Integer, Integer> map = new HashMap<>();
-        traverseTree(tree, target, map);
-        int minDiff = map.entrySet().stream().map(Map.Entry::getKey).min((a, b) -> a - b).get();
-        return map.get(minDiff);
+        return traverseTree(tree, target, Integer.MAX_VALUE, 0);
     }
 
-    private static void traverseTree(BST node, int target, Map<Integer, Integer> map) {
-        int diff = Math.abs(node.value - target);
-        map.put(diff, node.value);
-        if (node.left != null && node.right != null) {
-            if (target > node.value)
-                traverseTree(node.right, target, map);
-            else
-                traverseTree(node.left, target, map);
+    private static int traverseTree(BST node, int target, int abs, int closest) {
+        if (node == null)
+            return closest;
+
+        int diff = Math.abs(target - node.value);
+        if (diff < abs) {
+            abs = diff;
+            closest = node.value;
         }
 
-        if (node.left == null && node.right == null)
-            return;
-
-        if (node.left == null)
-            traverseTree(node.right, target, map);
+        if (target > node.value)
+            return traverseTree(node.right, target, abs, closest);
+        else if (target < node.value)
+            return traverseTree(node.left, target, abs, closest);
         else
-            traverseTree(node.left, target, map);
+            return closest;
     }
 
     private static void test() {
