@@ -20,6 +20,15 @@ public class MinimumWaitingTime {
         return sum;
     }
 
+    public int minimumWaitingTimeSolution(int[] queries) {
+        Arrays.sort(queries);
+        int sum = 0;
+        for (int i = 0; i < queries.length; i++) {
+            sum += queries[i] * (queries.length - (i + 1));
+        }
+        return sum;
+    }
+
     public static void main(String[] args) {
         MinimumWaitingTime m = new MinimumWaitingTime();
         System.out.printf("1. %s\n", m.minimumWaitingTime(new int[] {3, 2, 1, 2, 6}));
