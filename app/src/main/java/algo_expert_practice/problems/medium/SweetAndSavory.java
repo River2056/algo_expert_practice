@@ -12,7 +12,6 @@ public class SweetAndSavory {
         int left = 0;
         int right = dishes.length - 1;
         int[] result = new int[] {0, 0};
-        System.out.println(Arrays.toString(dishes));
         
         int max = Integer.MIN_VALUE;
         while (left < right && dishes[left] < 0 && dishes[right] > 0) {
@@ -31,7 +30,6 @@ public class SweetAndSavory {
             }
         }
 
-        // System.out.println(Arrays.toString(result));
         return result;
     }
 }
