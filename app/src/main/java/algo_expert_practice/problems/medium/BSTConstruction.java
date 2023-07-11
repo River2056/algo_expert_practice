@@ -17,10 +17,21 @@ public class BSTConstruction {
         public BST insert(int value) {
             BST current = this;
             while (current != null) {
-                if (current.value < value && current.right != null)
-                    current = current.right;
-                else if (current.value > value && current.left != null)
-                    current = current.left;
+                if (current.value < value) {
+                    if (current.right == null) {
+                        current.right = new BST(value);
+                        return this;
+                    } else {
+                        current = current.right;
+                    }
+                } else {
+                    if (current.left == null) {
+                        current.left = new BST(value);
+                        return this;
+                    } else {
+                        current = current.left;
+                    }
+                }
             }
 
             return this;
