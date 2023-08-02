@@ -1,7 +1,10 @@
-package com.river.practice;
+package algo_expert_practice.problems.medium;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * SymmetricalTree
@@ -19,7 +22,7 @@ public class SymmetricalTree {
         }
     }
 
-    public boolean symmetricalTree(BinaryTree tree) {
+    public boolean symmetricalTreeSelf(BinaryTree tree) {
         List<Integer> subtreeLeft = new ArrayList<>();
         List<Integer> subtreeRight = new ArrayList<>();
         traverseLeftDfs(tree.left, subtreeLeft);
@@ -41,6 +44,53 @@ public class SymmetricalTree {
         traverseRightDfs(node.right, res);
         res.add(node.value);
         traverseRightDfs(node.left, res);
+    }
+
+    /**
+     * "nodes": [
+     * {"id": "1", "left": "2", "right": "2-2", "value": 1},
+     * {"id": "2", "left": "3", "right": "4", "value": 2},
+     * {"id": "2-2", "left": "4-2", "right": "3-2", "value": 2},
+     * {"id": "3", "left": null, "right": null, "value": 3},
+     * {"id": "3-2", "left": null, "right": null, "value": 3},
+     * {"id": "4", "left": null, "right": null, "value": 4},
+     * {"id": "4-2", "left": null, "right": "5", "value": 4},
+     * {"id": "5", "left": null, "right": null, "value": 5}
+     * ],
+     * 1
+     * / \
+     * 2 2
+     * / \ / \
+     * 3 4 4 3
+     * \
+     * 5
+     */
+    public boolean symmetricalTree(BinaryTree tree) {
+        if (tree.left == null && tree.right == null)
+            return true;
+        Deque<Optional<BinaryTree>> stackLeft = new ArrayDeque<>();
+        Deque<Optional<BinaryTree>> stackRight = new ArrayDeque<>();
+        stackLeft.add(Optional.ofNullable(tree.left));
+        stackRight.add(Optional.ofNullable(tree.right));
+
+        while (!stackLeft.isEmpty()) {
+            BinaryTree left = stackLeft.removeLast().orElse(null);
+            BinaryTree right = stackRight.removeLast().orElse(null);
+            if (left == null || right == null)
+                return false;
+            if (left.value != right.value)
+                return false;
+            if (left.left != null || right.right != null) {
+                stackLeft.add(Optional.ofNullable(left.left));
+                stackRight.add(Optional.ofNullable(right.right));
+            }
+
+            if (left.right != null || right.left != null) {
+                stackLeft.add(Optional.ofNullable(left.right));
+                stackRight.add(Optional.ofNullable(right.left));
+            }
+        }
+        return true;
     }
 
     public static void main(String[] args) {
